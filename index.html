@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html ng-app="main">
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/icloud.css" />
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" href="http://at.alicdn.com/t/font_ioi7uvvg99gam7vi.css" />
+		<script src="js/angular.js"></script>
+		<script src="js/jquery.js"></script>
+		<script src="js/index.js"></script>
+	</head>
+	<body ng-controller="mainCtrl">
+		<div class="box">
+			<div class="left">
+				<div class="left-top">
+					<nav class="navbar-default navbar-inverse" role="navigation">
+						<div class="container-fluid">
+							<div class="navbar-header">
+								<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+								<a class="navbar-brand app-brand" href="#"></a>
+							</div>
+							<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+								<ul class="nav navbar-nav">
+									<li class="dropdown">
+										<a href="#" class="dropdown-toggle" data-toggle="dropdown">提醒事项<span class="caret"></span></a>
+									</li>
+								</ul>
+								<ul class="nav navbar-nav navbar-right">
+									<li>
+										<a href="#" id="additem" class="iconfont" ng-click="addlist();saveTolocal()">+</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</nav>
+				</div>
+				<div my-ul>
+					<li>
+						<span style="border-radius: 0"></span>
+						<div>已计划</div>
+					</li>
+					<li ng-class="{select:cu===$index}" ng-repeat="v in lists track by $index">
+						<span style="background:{{v.theme}}"></span>
+						<div>
+							<input type="text" ng-model="v.name" ng-keyup="saveTolocal()" ng-class="{se:cu===$index}" />
+						</div>
+					</li>
+				</div>
+
+			</div>
+			<div class="right {{lists[cu].theme}}">
+				<div class="right-top">
+					<span></span>
+					<input class="search" value="搜索所有提醒" type="text">
+					<div>
+						<span>登录</span>
+						<span></span>
+					</div>
+				</div>
+				<div class="right-moren">
+					<span>{{lists[cu].name}}</span>
+					<div class="select" ng-click="showTit($event)">选项</div>
+				</div>
+				<div class="finish">
+					<ul class="nav navbar-nav" style="width:100%;" id="tit">
+						<li class="dropdown">
+							<a href="#" style="margin-left: 30px" class="dropdown-toggle" data-toggle="dropdown" ng-init="aa=false" ng-click="aa=!aa;saveTolocal()">
+								<span class="caret" ng-class="{dis:aa}"></span>已完成: {{count()}}<span></span>项
+							</a>
+							<a href="#" class="clearall" ng-click="clearall();saveTolocal()">清除所有完成事项</a>
+							<ul class="dropdown-menu show" id="finishItem" role="menu" ng-init="aa=false">
+								<li ng-repeat="v in lists[cu].todos track by $index" ng-if="v.state===1" class="onea" ng-click="borderss()" >
+									<div class="top-line"></div>
+									<div class="midd-line"></div>
+									<div class="outcir" ng-click="v.state=0;saveTolocal()">
+										<div class="incir"></div>
+									</div>
+									<input type="text" ng-model="v.name">
+									<span class="delete" ng-click="deletess($index)">删除</span>
+									<div class="und-line"></div>
+								</li>
+								<li class="neverDo">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown" ng-init="bb=false"  ng-click="bb=!bb">
+										<span class="caret" ng-class="{dis:bb}"></span>未完成: {{lists[cu].todos.length-count()}}<span></span>项
+									</a>
+								</li>
+								<li class="neverinfo" ng-repeat="v in lists[cu].todos track by $index" ng-if="v.state===0" ng-click="borders()">
+									<div class="top-line"></div>
+									<div class="midd-line"></div>
+									<div class="outcir" ng-click="v.state=1;saveTolocal()">
+										<!--<div class="incir"></div>-->
+									</div>
+									
+									<input type="text" ng-model="v.name">
+									<span class="delete" ng-click="deletess($index)">删除</span>
+									<div class="und-line"></div>
+								</li>
+								<li class="addinfo">
+									<div class="top-line"></div>
+									<div class="midd-line"></div>
+									<input type="text" ng-keyup="addinfo($event);saveTolocal()">
+									
+									<div class="und-line"></div>
+								</li>
+								<li class="addbtn" ng-click="addshow($event)">
+									<input type="text" placeholder="新项目" disabled>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="tan">
+				<div class="tan-box">
+					<input type="text" maxlength="8" maxlength="10" ng-model="lists[cu].name" ng-keyup="saveTolocal()" style="color:{{lists[cu].theme}}">
+					<p>列表颜色</p>
+					<ul>
+						<li ng-repeat="v in colors" ng-click="lists[cu].theme=v;saveTolocal()" class="{{v}}">
+							<span class="span"></span>
+						</li>
+					</ul>
+					<div class="btns">
+						<div ng-click="deletes();caveTolocal()">
+							<a href="#">删除</a>
+						</div>
+						<div>
+							<a href="#">取消</a>
+							<a href="#">完成</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
